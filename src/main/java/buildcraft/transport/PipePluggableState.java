@@ -13,7 +13,17 @@ public class PipePluggableState implements ISerializable {
     private PipePluggable[] pluggables = new PipePluggable[6];
     private final ConnectionMatrix pluggableMatrix = new ConnectionMatrix();
 
+    private boolean[] disconnected = new boolean[6];
+
     public PipePluggableState() {}
+
+    public boolean[] getDisconnectedSides() {
+        return disconnected;
+    }
+
+    public void setDisconnectedSides(boolean[] disconnected) {
+        this.disconnected = disconnected;
+    }
 
     public PipePluggable[] getPluggables() {
         return pluggables;
@@ -39,6 +49,9 @@ public class PipePluggableState implements ISerializable {
                 p.writeData(data);
             }
         }
+        for (boolean b : disconnected) {
+            data.writeBoolean(b);
+        }
     }
 
     @Override
@@ -62,6 +75,9 @@ public class PipePluggableState implements ISerializable {
             } else {
                 pluggables[dir.ordinal()] = null;
             }
+        }
+        for (int i = 0; i < disconnected.length; i++) {
+            disconnected[i] = data.readBoolean();
         }
     }
 }

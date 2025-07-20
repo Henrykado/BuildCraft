@@ -6,8 +6,10 @@
  */
 package buildcraft.transport;
 
+import java.util.Arrays;
 import java.util.List;
 
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -83,6 +85,7 @@ public class TileGenericPipe extends TileEntity
     protected boolean pipeBound = false;
     protected boolean resyncGateExpansions = false;
     protected boolean attachPluggables = false;
+    protected boolean updateDisconnected = false;
     protected SideProperties sideProperties = new SideProperties();
 
     private TileBuffer[] tileBuffer;
@@ -107,6 +110,8 @@ public class TileGenericPipe extends TileEntity
 
         PipePluggable[] pluggables = new PipePluggable[ForgeDirection.VALID_DIRECTIONS.length];
 
+        boolean[] disconnected = new boolean[ForgeDirection.VALID_DIRECTIONS.length];
+
         public void writeToNBT(NBTTagCompound nbt) {
             for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
                 PipePluggable pluggable = pluggables[i];
@@ -119,6 +124,8 @@ public class TileGenericPipe extends TileEntity
                     pluggable.writeToNBT(pluggableData);
                     nbt.setTag(key, pluggableData);
                 }
+
+                nbt.setBoolean("disconnected[" + i + "]", disconnected[i]);
             }
         }
 
@@ -206,6 +213,8 @@ public class TileGenericPipe extends TileEntity
                 if (pluggable != null) {
                     pluggables[i] = pluggable;
                 }
+
+                disconnected[i] = nbt.getBoolean("disconnected[" + i + "]");
             }
         }
 
@@ -326,6 +335,7 @@ public class TileGenericPipe extends TileEntity
 
         sideProperties.readFromNBT(nbt);
         attachPluggables = true;
+        updateDisconnected = true;
     }
 
     @Override
@@ -390,6 +400,10 @@ public class TileGenericPipe extends TileEntity
                     sideProperties.pluggables[i].onAttachedPipe(this, ForgeDirection.getOrientation(i));
                 }
             }
+            notifyBlockChanged();
+        }
+        if (updateDisconnected) {
+            updateDisconnected = false;
             notifyBlockChanged();
         }
 
@@ -536,6 +550,7 @@ public class TileGenericPipe extends TileEntity
          * network bandwidth
          */
         pluggableState.setPluggables(sideProperties.pluggables);
+        pluggableState.setDisconnectedSides(sideProperties.disconnected);
 
         if (renderState.isDirty()) {
             renderState.clean();
@@ -797,12 +812,32 @@ public class TileGenericPipe extends TileEntity
         return canPipeConnect_internal(with, side);
     }
 
-    public boolean hasBlockingPluggable(ForgeDirection side) {
-        PipePluggable pluggable = getPipePluggable(side);
-        if (pluggable == null) {
-            return false;
+
+    public TileGenericPipe getNeighborPipeTile(ForgeDirection dir) {
+        TileEntity neighborTile = getTile(dir);
+        if (neighborTile instanceof TileGenericPipe) {
+            return (TileGenericPipe) neighborTile;
+        } else {
+            return null;
+        }
+    }
+
+    public boolean isSideDisconnected(ForgeDirection side) {
+        if (side == null || side == ForgeDirection.UNKNOWN) {
+            return true;
         }
 
+        return sideProperties.disconnected[side.ordinal()];
+    }
+
+    public void setSideAsDisconnected(ForgeDirection side, boolean value) {
+        sideProperties.disconnected[side.ordinal()] = value;
+        //computeConnections();
+        notifyBlockChanged();
+    }
+
+    public boolean hasBlockingPluggable(ForgeDirection side) {
+        PipePluggable pluggable = getPipePluggable(side);
         if (pluggable instanceof IPipeConnection) {
             IPipe neighborPipe = getNeighborPipe(side);
             if (neighborPipe != null) {
@@ -815,7 +850,10 @@ public class TileGenericPipe extends TileEntity
                 }
             }
         }
-        return pluggable.isBlocking(this, side);
+
+        //FMLLog.info("[BC] disconnected " + side.name() + " " + isSideDisconnected(side));
+        return (pluggable != null && pluggable.isBlocking(this, side))
+                    || isSideDisconnected(side);
     }
 
     protected void computeConnections() {
@@ -1035,14 +1073,16 @@ public class TileGenericPipe extends TileEntity
             }
             case 2: {
                 PipePluggable[] newPluggables = pluggableState.getPluggables();
+                boolean[] newDisconnectedSides = pluggableState.getDisconnectedSides();
 
                 // mark for render update if necessary
                 for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
                     PipePluggable old = sideProperties.pluggables[i];
                     PipePluggable newer = newPluggables[i];
-                    if (old == null && newer == null) {
+
+                    if ((old == null && newer == null)) {
                         continue;
-                    } else if (old != null && newer != null && old.getClass() == newer.getClass()) {
+                    } else if ((old != null && newer != null && old.getClass() == newer.getClass())) {
                         if (newer.requiresRenderUpdate(old)) {
                             worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
                             break;
@@ -1052,8 +1092,14 @@ public class TileGenericPipe extends TileEntity
                         worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
                         break;
                     }
+
+                    if (sideProperties.disconnected[i] != newDisconnectedSides[i]) {
+                        worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+                        break;
+                    }
                 }
                 sideProperties.pluggables = newPluggables.clone();
+                sideProperties.disconnected = newDisconnectedSides.clone();
 
                 for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
                     final PipePluggable pluggable = getPipePluggable(ForgeDirection.getOrientation(i));
@@ -1177,7 +1223,7 @@ public class TileGenericPipe extends TileEntity
             PipePluggable pluggable = getPipePluggable(side);
             if (pluggable instanceof IEnergyHandler) {
                 return (IEnergyHandler) pluggable;
-            } else if (pluggable.isBlocking(this, side)) {
+            } else if (pluggable.isBlocking(this, side) || isSideDisconnected(side)) {
                 return null;
             }
         }

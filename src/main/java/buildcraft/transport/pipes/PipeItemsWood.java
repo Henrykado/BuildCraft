@@ -149,7 +149,7 @@ public class PipeItemsWood extends Pipe<PipeTransportItems> implements IEnergyHa
             }
         }
 
-        return ticksSincePull >= 16 && battery.getEnergyStored() >= 10;
+        return ticksSincePull >= 16 && (battery.getEnergyStored() >= 10 || logic.isBeingPoweredByRedstone());
     }
 
     private void extractItems() {
@@ -228,7 +228,10 @@ public class PipeItemsWood extends Pipe<PipeTransportItems> implements IEnergyHa
             if (slot != null && slot.stackSize > 0 && inventory.canExtractItem(k, slot, from.ordinal())) {
                 if (doRemove) {
                     int maxStackSize = slot.stackSize;
-                    int stackSize = Math.min(maxStackSize, battery.getEnergyStored() / 10);
+                    int stackSize = 1;
+                    if (!logic.isBeingPoweredByRedstone()) {
+                        stackSize = Math.min(maxStackSize, battery.getEnergyStored() / 10);
+                    }
                     // TODO: Look into the Speed Multiplier again someday.
                     // speedMultiplier = Math.min(4.0F, battery.getEnergyStored() * 10 / stackSize);
                     int energyUsed = (int) (stackSize * 10 * speedMultiplier);
@@ -242,6 +245,11 @@ public class PipeItemsWood extends Pipe<PipeTransportItems> implements IEnergyHa
         }
 
         return null;
+    }
+
+    @Override
+    public boolean canConnectRedstone() {
+        return true;
     }
 
     @Override

@@ -128,8 +128,8 @@ public class PipeIconProvider implements IIconProvider {
         PipeRobotStationReserved("pipeRobotStationReserved", "pipeRobotStationReserved_cb"),
         PipeRobotStationLinked("pipeRobotStationLinked", "pipeRobotStationLinked_cb"),
         //
-        Power_Normal("core:misc/texture_cyan"),
-        Power_Overload("core:misc/texture_red_lit"),
+        Power_Normal("core:misc/texture_red_lit"),
+        Power_Overload("core:misc/texture_red_dark"),
         Stripes("pipeStripes"),
         //
         PipeStainedOverlay("pipeStainedOverlay"),
@@ -146,7 +146,9 @@ public class PipeIconProvider implements IIconProvider {
         PipePowerAdapterBottom("pipePowerAdapterBottom"),
         PipePowerAdapterTop("pipePowerAdapterTop"),
         //
-        ItemBox("itemBox");
+        ItemBox("itemBox"),
+        //
+        PipeItemConnection("pipeItemsConnection");
 
         public static final TYPE[] VALUES = values();
         private final String iconTag;

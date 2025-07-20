@@ -34,13 +34,13 @@ public final class PipeConnectionBans {
 
     static {
         // Fluid pipes
-        banConnection(PipeFluidsStone.class, PipeFluidsCobblestone.class, PipeFluidsQuartz.class);
+        //banConnection(PipeFluidsStone.class, PipeFluidsCobblestone.class, PipeFluidsQuartz.class);
         banConnection(PipeFluidsWood.class);
         banConnection(PipeFluidsEmerald.class);
         banConnection(PipeFluidsWood.class, PipeFluidsEmerald.class);
 
         // Item Pipes
-        banConnection(PipeItemsStone.class, PipeItemsCobblestone.class, PipeItemsQuartz.class);
+        //banConnection(PipeItemsStone.class, PipeItemsCobblestone.class, PipeItemsQuartz.class);
         banConnection(PipeItemsWood.class);
         banConnection(PipeItemsEmerald.class);
         banConnection(PipeItemsEmzuli.class);

@@ -6,8 +6,11 @@
  */
 package buildcraft.transport.render;
 
+import buildcraft.transport.utils.ConnectionMatrix;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
+import net.minecraft.block.BlockLever;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.tileentity.TileEntity;
@@ -32,7 +35,7 @@ public class PipeRendererWorld extends BCSimpleBlockRenderingHandler {
 
     public static int renderPass = -1;
     public static float zFightOffset = 1F / 4096F;
-    private static final double[] CHEST_BB = new double[] { 0, 0.0625F, 0.0625F, 0.875F, 0.9375F, 0.9375F };
+    private static final double[] CHEST_BB = new double[] { 0.0625, 0.0, 0.0625, 0.9375, 0.875, 0.9375 };
 
     public boolean renderPipe(RenderBlocks renderblocks, IBlockAccess iblockaccess, TileGenericPipe tile, int x, int y,
             int z) {
@@ -114,13 +117,13 @@ public class PipeRendererWorld extends BCSimpleBlockRenderingHandler {
 
                 // Render connection to block
                 if (Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+                    fakeBlock.getTextureState().set(PipeIconProvider.TYPE.PipeItemConnection.getIcon());
                     ForgeDirection side = ForgeDirection.getOrientation(dir);
                     int px = x + side.offsetX;
                     int py = y + side.offsetY;
                     int pz = z + side.offsetZ;
                     Block block = iblockaccess.getBlock(px, py, pz);
-                    if (!(block instanceof BlockGenericPipe) && !block.isOpaqueCube()) {
-
+                    if (!(block instanceof BlockGenericPipe) && !block.isOpaqueCube() && block.getMaterial() != Material.air) {
                         double[] blockBB;
                         if (block instanceof BlockChest) {
                             // work around what seems to be a vanilla bug?
@@ -132,29 +135,13 @@ public class PipeRendererWorld extends BCSimpleBlockRenderingHandler {
                                     block.getBlockBoundsMinZ(), block.getBlockBoundsMaxY(), block.getBlockBoundsMaxX(),
                                     block.getBlockBoundsMaxZ() };
                         }
+                        blockBB[3] = Math.abs(blockBB[3] - 1D);
+                        blockBB[4] = Math.abs(blockBB[4] - 1D);
+                        blockBB[5] = Math.abs(blockBB[5] - 1D);
 
-                        if ((dir % 2 == 1 && blockBB[dir / 2] != 0) || (dir % 2 == 0 && blockBB[dir / 2 + 3] != 1)) {
-                            resetToCenterDimensions(dim);
+                        blockBB = new double[6];
 
-                            if (dir % 2 == 1) {
-                                dim[dir / 2] = 0;
-                                dim[dir / 2 + 3] = (float) blockBB[dir / 2];
-                            } else {
-                                dim[dir / 2] = (float) blockBB[dir / 2 + 3];
-                                dim[dir / 2 + 3] = 1;
-                            }
-
-                            fixForRenderPass(dim);
-
-                            renderTwoWayBlock(
-                                    renderblocks,
-                                    fakeBlock,
-                                    x + side.offsetX,
-                                    y + side.offsetY,
-                                    z + side.offsetZ,
-                                    dim,
-                                    renderMask);
-                        }
+                        renderBlockConnection(renderblocks, dir, fakeBlock, x, y, z, blockBB);
                     }
                 }
             }
@@ -177,6 +164,17 @@ public class PipeRendererWorld extends BCSimpleBlockRenderingHandler {
         return rendered;
     }
 
+    private void fixForRenderPass(double[] dim) {
+        if (renderPass == 1) {
+            for (int i = 0; i < 3; i++) {
+                dim[i] += zFightOffset;
+            }
+
+            for (int i = 3; i < 6; i++) {
+                dim[i] -= zFightOffset;
+            }
+        }
+    }
     private void fixForRenderPass(float[] dim) {
         if (renderPass == 1) {
             for (int i = 0; i < 3; i++) {
@@ -194,6 +192,62 @@ public class PipeRendererWorld extends BCSimpleBlockRenderingHandler {
             dim[i] = CoreConstants.PIPE_MIN_POS;
             dim[i + 3] = CoreConstants.PIPE_MAX_POS;
         }
+    }
+
+    private void renderBlockConnection(RenderBlocks renderblocks, int dir, FakeBlock stateHost, int x, int y, int z, double[] bounds) {
+        double MIN = CoreConstants.PIPE_MIN_POS - (1 / 16d); // default min x/y/z value, 3 / 16
+        double MAX = CoreConstants.PIPE_MAX_POS + (1 / 16d); // default max x/y/z value, 13 / 16
+        double[] renderBounds;
+        switch (dir)
+        {
+            case 0: // DOWN
+                renderblocks.uvRotateEast = 3;
+                renderblocks.uvRotateWest = 3;
+                renderblocks.uvRotateSouth = 3;
+                renderblocks.uvRotateNorth = 3;
+                renderBounds = new double[] {MIN, 0.0D - bounds[4], MIN, MAX, 0.25D - bounds[4], MAX};
+                break;
+            case 1: // UP
+                renderBounds = new double[] {MIN, 0.75D + bounds[1], MIN, MAX, 1.0D + bounds[1], MAX};
+                break;
+            case 2: // NORTH, Z-
+                renderblocks.uvRotateSouth = 1;
+                renderblocks.uvRotateNorth = 2;
+                renderBounds = new double[] {MIN, MIN, 0.0D - bounds[5], MAX, MAX, 0.25D - bounds[5]};
+                break;
+            case 3: // SOUTH, Z+
+                renderblocks.uvRotateSouth = 2;
+                renderblocks.uvRotateNorth = 1;
+                renderblocks.uvRotateTop = 3;
+                renderblocks.uvRotateBottom = 3;
+                renderBounds = new double[] {MIN, MIN, 0.75 + bounds[2], MAX, MAX, 1.0D + bounds[2]};
+                break;
+            case 4: // WEST, X-
+                renderblocks.uvRotateEast = 1;
+                renderblocks.uvRotateWest = 2;
+                renderblocks.uvRotateTop = 2;
+                renderblocks.uvRotateBottom = 1;
+                renderBounds = new double[] {0.0D - bounds[3], MIN, MIN, 0.25D - bounds[3], MAX, MAX};
+                break;
+            default: // EAST, X+
+                renderblocks.uvRotateEast = 2;
+                renderblocks.uvRotateWest = 1;
+                renderblocks.uvRotateTop = 1;
+                renderblocks.uvRotateBottom = 2;
+                renderBounds = new double[] {0.75D + bounds[0], MIN, MIN, 1.0D + bounds[0], MAX, MAX};
+        }
+        fixForRenderPass(renderBounds);
+
+        renderblocks.setRenderBounds(renderBounds[0], renderBounds[1], renderBounds[2], renderBounds[3], renderBounds[4], renderBounds[5]);
+        //stateHost.setBlockBounds((float)renderblocks.renderMinX, (float)renderblocks.renderMinY, (float)renderblocks.renderMinZ, (float)renderblocks.renderMaxX, (float)renderblocks.renderMaxY, (float)renderblocks.renderMaxZ);
+        renderblocks.renderStandardBlockWithColorMultiplier(stateHost, x, y, z, 1f, 1f, 1f);
+        renderblocks.uvRotateEast = 0;
+        renderblocks.uvRotateWest = 0;
+        renderblocks.uvRotateSouth = 0;
+        renderblocks.uvRotateNorth = 0;
+        renderblocks.uvRotateTop = 0;
+        renderblocks.uvRotateBottom = 0;
+        //renderblocks.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
     }
 
     /**

@@ -6,6 +6,7 @@
  */
 package buildcraft.transport.pipes;
 
+import buildcraft.transport.pipes.events.PipeEventItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -32,5 +33,9 @@ public class PipeItemsCobblestone extends Pipe<PipeTransportItems> {
     @Override
     public int getIconIndex(ForgeDirection direction) {
         return PipeIconProvider.TYPE.PipeItemsCobbleStone.ordinal();
+    }
+
+    public void eventHandler(PipeEventItem.AdjustSpeed event) {
+        event.slowdownAmount /= 2;
     }
 }

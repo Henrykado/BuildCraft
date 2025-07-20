@@ -160,6 +160,11 @@ public class PipeFluidsWood extends Pipe<PipeTransportFluids> implements IEnergy
     }
 
     @Override
+    public boolean canConnectRedstone() {
+        return true;
+    }
+
+    @Override
     public boolean canConnectEnergy(ForgeDirection from) {
         return true;
     }
