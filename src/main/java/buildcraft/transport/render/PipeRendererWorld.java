@@ -35,7 +35,7 @@ public class PipeRendererWorld extends BCSimpleBlockRenderingHandler {
 
     public static int renderPass = -1;
     public static float zFightOffset = 1F / 4096F;
-    private static final double[] CHEST_BB = new double[] { 0.0625, 0.0, 0.0625, 0.9375, 0.875, 0.9375 };
+    private static final double[] CHEST_BB = new double[] { 0, 0.0625F, 0.0625F, 0.875F, 0.9375F, 0.9375F };
 
     public boolean renderPipe(RenderBlocks renderblocks, IBlockAccess iblockaccess, TileGenericPipe tile, int x, int y,
             int z) {
@@ -135,13 +135,35 @@ public class PipeRendererWorld extends BCSimpleBlockRenderingHandler {
                                     block.getBlockBoundsMinZ(), block.getBlockBoundsMaxY(), block.getBlockBoundsMaxX(),
                                     block.getBlockBoundsMaxZ() };
                         }
-                        blockBB[3] = Math.abs(blockBB[3] - 1D);
-                        blockBB[4] = Math.abs(blockBB[4] - 1D);
-                        blockBB[5] = Math.abs(blockBB[5] - 1D);
 
-                        blockBB = new double[6];
+                        if ((dir % 2 == 1 && blockBB[dir / 2] != 0) || (dir % 2 == 0 && blockBB[dir / 2 + 3] != 1)) {
+                            resetToCenterDimensions(dim);
 
-                        renderBlockConnection(renderblocks, dir, fakeBlock, x, y, z, blockBB);
+                            if (dir % 2 == 1) {
+                                dim[dir / 2] = 0;
+                                dim[dir / 2 + 3] = (float) blockBB[dir / 2];
+                            } else {
+                                dim[dir / 2] = (float) blockBB[dir / 2 + 3];
+                                dim[dir / 2 + 3] = 1;
+                            }
+
+                            fixForRenderPass(dim);
+
+                            renderTwoWayBlock(
+                                    renderblocks,
+                                    fakeBlock,
+                                    x + side.offsetX,
+                                    y + side.offsetY,
+                                    z + side.offsetZ,
+                                    dim,
+                                    renderMask);
+
+                            /*blockBB[3] = Math.abs(blockBB[3] - 1D);
+                            blockBB[4] = Math.abs(blockBB[4] - 1D);
+                            blockBB[5] = Math.abs(blockBB[5] - 1D);*/
+
+                            //renderBlockConnection(renderblocks, dir, fakeBlock, x, y, z, blockBB);
+                        }
                     }
                 }
             }
@@ -164,17 +186,6 @@ public class PipeRendererWorld extends BCSimpleBlockRenderingHandler {
         return rendered;
     }
 
-    private void fixForRenderPass(double[] dim) {
-        if (renderPass == 1) {
-            for (int i = 0; i < 3; i++) {
-                dim[i] += zFightOffset;
-            }
-
-            for (int i = 3; i < 6; i++) {
-                dim[i] -= zFightOffset;
-            }
-        }
-    }
     private void fixForRenderPass(float[] dim) {
         if (renderPass == 1) {
             for (int i = 0; i < 3; i++) {
@@ -236,7 +247,7 @@ public class PipeRendererWorld extends BCSimpleBlockRenderingHandler {
                 renderblocks.uvRotateBottom = 2;
                 renderBounds = new double[] {0.75D + bounds[0], MIN, MIN, 1.0D + bounds[0], MAX, MAX};
         }
-        fixForRenderPass(renderBounds);
+        //fixForRenderPass(renderBounds);
 
         renderblocks.setRenderBounds(renderBounds[0], renderBounds[1], renderBounds[2], renderBounds[3], renderBounds[4], renderBounds[5]);
         //stateHost.setBlockBounds((float)renderblocks.renderMinX, (float)renderblocks.renderMinY, (float)renderblocks.renderMinZ, (float)renderblocks.renderMaxX, (float)renderblocks.renderMaxY, (float)renderblocks.renderMaxZ);

@@ -158,8 +158,8 @@ public class PipeFluidsWood extends Pipe<PipeTransportFluids> implements IEnergy
         int meta = container.getBlockMetadata();
         return super.outputOpen(to) && meta != to.ordinal();
     }
-
-    @Override
+	
+	@Override
     public boolean canConnectRedstone() {
         return true;
     }

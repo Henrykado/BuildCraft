@@ -6,8 +6,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class BlockGearbox extends BlockBuildCraft {
-    protected BlockGearbox() {
+    public BlockGearbox() {
         super(Material.wood);
+
+        setStepSound(soundTypeWood);
     }
 
     @Override

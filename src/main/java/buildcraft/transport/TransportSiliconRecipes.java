@@ -3,6 +3,7 @@ package buildcraft.transport;
 import java.util.ArrayList;
 import java.util.List;
 
+import buildcraft.silicon.ItemRedstoneChipset;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -13,7 +14,6 @@ import buildcraft.api.recipes.BuildcraftRecipeRegistry;
 import buildcraft.api.transport.PipeWire;
 import buildcraft.core.lib.utils.ColorUtils;
 import buildcraft.core.lib.utils.Utils;
-import buildcraft.silicon.ItemRedstoneChipset;
 import buildcraft.transport.gates.GateDefinition;
 import buildcraft.transport.gates.GateExpansionPulsar;
 import buildcraft.transport.gates.GateExpansionRedstoneFader;
@@ -167,7 +167,7 @@ public final class TransportSiliconRecipes {
 
     @Optional.Method(modid = "BuildCraft|Silicon")
     private static void addGateRecipe(String materialName, int energyCost, GateDefinition.GateMaterial material,
-            ItemRedstoneChipset.Chipset chipset, PipeWire... pipeWire) {
+                                      ItemRedstoneChipset.Chipset chipset, PipeWire... pipeWire) {
         List<ItemStack> temp = new ArrayList<ItemStack>();
         temp.add(chipset.getStack());
         for (PipeWire wire : pipeWire) {
