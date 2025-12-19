@@ -34,6 +34,9 @@ public class TransportProxy {
         GameRegistry.registerTileEntity(
                 CompatHooks.INSTANCE.getTile(TileFilteredBuffer.class),
                 "net.minecraft.src.buildcraft.transport.TileFilteredBuffer");
+        GameRegistry.registerTileEntity(
+                CompatHooks.INSTANCE.getTile(TileGear.class),
+                "net.minecraft.src.buildcraft.transport.TileGear");
     }
 
     public void registerRenderers() {}

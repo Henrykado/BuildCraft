@@ -29,6 +29,7 @@ import buildcraft.api.items.IMapLocation;
 import buildcraft.core.lib.items.ItemBuildCraft;
 import buildcraft.core.lib.utils.NBTUtils;
 import buildcraft.core.lib.utils.StringUtils;
+import buildcraft.robotics.ZonePlan;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -261,6 +262,13 @@ public class ItemMapLocation extends ItemBuildCraft implements IMapLocation {
         } else {
             return null;
         }
+    }
+
+    public static void setZone(ItemStack item, ZonePlan plan) {
+        NBTTagCompound cpt = NBTUtils.getItemData(item);
+
+        cpt.setByte("kind", (byte) 3);
+        plan.writeToNBT(cpt);
     }
 
     @Override

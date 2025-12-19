@@ -149,7 +149,8 @@ public class PipeItemsWood extends Pipe<PipeTransportItems> implements IEnergyHa
             }
         }
 
-        return ticksSincePull >= 16 && (battery.getEnergyStored() >= 10 || logic.isBeingPoweredByRedstone());
+        return ticksSincePull >= 16 && battery.getEnergyStored() >= 10
+                || (ticksSincePull >= 48 && logic.isBeingPoweredByRedstone());
     }
 
     private void extractItems() {

@@ -16,14 +16,18 @@ import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockLever;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import buildcraft.api.tools.IToolWrench;
 import buildcraft.core.lib.items.ItemBuildCraft;
 import buildcraft.core.lib.utils.BlockUtils;
+import mrtjp.projectred.api.IScrewdriver;
+import thaumcraft.common.blocks.BlockTube;
+import thaumcraft.common.tiles.TileTube;
 
-public class ItemWrench extends ItemBuildCraft implements IToolWrench {
+public class ItemWrench extends ItemBuildCraft implements IToolWrench, IScrewdriver {
 
     private final Set<Class<? extends Block>> shiftRotations = new HashSet<Class<? extends Block>>();
     private final Set<Class<? extends Block>> blacklistedRotations = new HashSet<Class<? extends Block>>();
@@ -58,6 +62,15 @@ public class ItemWrench extends ItemBuildCraft implements IToolWrench {
             return false;
         }
 
+        if (block instanceof BlockTube) {
+            TileEntity tile = world.getTileEntity(x, y, z);
+            if (tile instanceof TileTube) {
+                ((TileTube) tile).onWandRightClick(world, stack, player, x, y, z, side, 0);
+                player.swingItem();
+                return !world.isRemote;
+            }
+        }
+
         if (player.isSneaking() != isClass(shiftRotations, block.getClass())) {
             return false;
         }
@@ -88,4 +101,12 @@ public class ItemWrench extends ItemBuildCraft implements IToolWrench {
     public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
         return true;
     }
+
+    @Override
+    public boolean canUse(EntityPlayer player, ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public void damageScrewdriver(EntityPlayer player, ItemStack stack) {}
 }

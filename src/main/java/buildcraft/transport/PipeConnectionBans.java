@@ -9,17 +9,11 @@ package buildcraft.transport;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 
-import buildcraft.transport.pipes.PipeFluidsCobblestone;
 import buildcraft.transport.pipes.PipeFluidsEmerald;
-import buildcraft.transport.pipes.PipeFluidsQuartz;
-import buildcraft.transport.pipes.PipeFluidsStone;
 import buildcraft.transport.pipes.PipeFluidsWood;
-import buildcraft.transport.pipes.PipeItemsCobblestone;
 import buildcraft.transport.pipes.PipeItemsEmerald;
 import buildcraft.transport.pipes.PipeItemsEmzuli;
 import buildcraft.transport.pipes.PipeItemsObsidian;
-import buildcraft.transport.pipes.PipeItemsQuartz;
-import buildcraft.transport.pipes.PipeItemsStone;
 import buildcraft.transport.pipes.PipeItemsWood;
 import buildcraft.transport.pipes.PipePowerEmerald;
 import buildcraft.transport.pipes.PipePowerWood;
@@ -34,13 +28,13 @@ public final class PipeConnectionBans {
 
     static {
         // Fluid pipes
-        //banConnection(PipeFluidsStone.class, PipeFluidsCobblestone.class, PipeFluidsQuartz.class);
+        // banConnection(PipeFluidsStone.class, PipeFluidsCobblestone.class, PipeFluidsQuartz.class);
         banConnection(PipeFluidsWood.class);
         banConnection(PipeFluidsEmerald.class);
         banConnection(PipeFluidsWood.class, PipeFluidsEmerald.class);
 
         // Item Pipes
-        //banConnection(PipeItemsStone.class, PipeItemsCobblestone.class, PipeItemsQuartz.class);
+        // banConnection(PipeItemsStone.class, PipeItemsCobblestone.class, PipeItemsQuartz.class);
         banConnection(PipeItemsWood.class);
         banConnection(PipeItemsEmerald.class);
         banConnection(PipeItemsEmzuli.class);

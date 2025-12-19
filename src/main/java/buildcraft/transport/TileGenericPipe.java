@@ -810,7 +810,6 @@ public class TileGenericPipe extends TileEntity
         return canPipeConnect_internal(with, side);
     }
 
-
     public TileGenericPipe getNeighborPipeTile(ForgeDirection dir) {
         TileEntity neighborTile = getTile(dir);
         if (neighborTile instanceof TileGenericPipe) {
@@ -830,7 +829,7 @@ public class TileGenericPipe extends TileEntity
 
     public void setSideAsDisconnected(ForgeDirection side, boolean value) {
         sideProperties.disconnected[side.ordinal()] = value;
-        //computeConnections();
+        // computeConnections();
         notifyBlockChanged();
     }
 
@@ -849,9 +848,8 @@ public class TileGenericPipe extends TileEntity
             }
         }
 
-        //FMLLog.info("[BC] disconnected " + side.name() + " " + isSideDisconnected(side));
-        return (pluggable != null && pluggable.isBlocking(this, side))
-                    || isSideDisconnected(side);
+        // FMLLog.info("[BC] disconnected " + side.name() + " " + isSideDisconnected(side));
+        return (pluggable != null && pluggable.isBlocking(this, side)) || isSideDisconnected(side);
     }
 
     protected void computeConnections() {

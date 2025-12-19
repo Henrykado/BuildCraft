@@ -1,10 +1,30 @@
 package buildcraft.transport;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import buildcraft.core.lib.block.TileBuildCraft;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileGear extends TileBuildCraft {
-    boolean[] sides = new boolean[6];
 
+    public boolean[] sides = new boolean[6];
 
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
+    }
+
+    @Override
+    public void initialize() {
+        super.initialize();
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+    }
 }

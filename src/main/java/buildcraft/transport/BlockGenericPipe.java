@@ -14,9 +14,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
-import buildcraft.core.ItemWrench;
-import buildcraft.transport.pluggable.ItemPlug;
-import cpw.mods.fml.common.FMLLog;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.material.Material;
@@ -62,6 +59,7 @@ import buildcraft.core.lib.utils.Utils;
 import buildcraft.core.proxy.CoreProxy;
 import buildcraft.transport.gates.GatePluggable;
 import buildcraft.transport.render.PipeRendererWorld;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -149,13 +147,13 @@ public class BlockGenericPipe extends BlockBuildCraft implements IColorRemovable
 
     @Override
     public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-        /*TileEntity tile = world.getTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(x, y, z);
 
         if (tile instanceof ISolidSideTile) {
             return ((ISolidSideTile) tile).isSolidOnSide(side);
-        }*/
+        }
 
-        return true;
+        return false;
     }
 
     @Override
@@ -695,11 +693,7 @@ public class BlockGenericPipe extends BlockBuildCraft implements IColorRemovable
                 RaytraceResult rayTraceResult = doRayTrace(world, x, y, z, player);
                 if (rayTraceResult != null) {
                     if (player.isSneaking()
-                            && disconnectPipeSide(
-                                rayTraceResult,
-                                ForgeDirection.getOrientation(side),
-                                pipe))
-                    {
+                            && disconnectPipeSide(rayTraceResult, ForgeDirection.getOrientation(side), pipe)) {
                         return true;
                     }
 
@@ -777,8 +771,7 @@ public class BlockGenericPipe extends BlockBuildCraft implements IColorRemovable
 
     public boolean disconnectPipeSide(RaytraceResult rayTraceResult, ForgeDirection side, Pipe<?> pipe) {
         if (rayTraceResult.hitPart == Part.Pipe) {
-            ForgeDirection placementSide = rayTraceResult.sideHit != ForgeDirection.UNKNOWN
-                    ? rayTraceResult.sideHit
+            ForgeDirection placementSide = rayTraceResult.sideHit != ForgeDirection.UNKNOWN ? rayTraceResult.sideHit
                     : side;
 
             TileEntity neighborPipe = pipe.container.getTile(placementSide);
@@ -792,7 +785,7 @@ public class BlockGenericPipe extends BlockBuildCraft implements IColorRemovable
             pipe.container.setSideAsDisconnected(placementSide, newValue);
 
             if (neighborPipe instanceof TileGenericPipe) {
-                ((TileGenericPipe)neighborPipe).setSideAsDisconnected(placementSide.getOpposite(), newValue);
+                ((TileGenericPipe) neighborPipe).setSideAsDisconnected(placementSide.getOpposite(), newValue);
                 FMLLog.info("[BC] set neighbor");
             }
 

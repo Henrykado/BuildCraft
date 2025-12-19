@@ -16,6 +16,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import buildcraft.BuildCraftTransport;
 import buildcraft.transport.render.FacadeItemRenderer;
 import buildcraft.transport.render.GateItemRenderer;
+import buildcraft.transport.render.GearRenderer;
 import buildcraft.transport.render.PipeItemRenderer;
 import buildcraft.transport.render.PipeRendererTESR;
 import buildcraft.transport.render.PipeRendererWorld;
@@ -70,6 +71,8 @@ public class TransportProxyClient extends TransportProxy {
         TransportProxy.pipeModel = RenderingRegistry.getNextAvailableRenderId();
 
         RenderingRegistry.registerBlockHandler(pipeWorldRenderer);
+
+        RenderingRegistry.registerBlockHandler(new GearRenderer(RenderingRegistry.getNextAvailableRenderId()));
     }
 
     @Override
