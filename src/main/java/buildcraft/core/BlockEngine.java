@@ -9,7 +9,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import buildcraft.core.lib.engines.BlockEngineBase;
-import buildcraft.core.lib.engines.TileEngineBase;
 
 public class BlockEngine extends BlockEngineBase {
 
