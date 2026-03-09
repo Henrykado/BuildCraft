@@ -172,24 +172,7 @@ fillerpattern.parameter.hollow=Hollow
 fillerpattern.parameter.filled=Filled
 
 fluid.oil=석유
-fluid.fuel=Fuel
 fluid.steam=증기
-fluid.oilDistilled=Distilled Oil
-fluid.oilHeavy=Heavy Oil
-fluid.oilDense=Dense Oil
-fluid.oilResidue=Residue
-fluid.tar=Tar
-fluid.fuelMixed=Mixed Fuels
-fluid.fuelMixedHeavy=Mixed Heavy Fuels
-fluid.fuelMixedLight=Mixed Light Fuels
-fluid.fuelDense=Dense Fuel
-fluid.fuelLight=Fuel
-fluid.fuelGaseous=Gaseous Fuel
-
-buildcraft.fluid.heat_0= (§bCool§b)
-buildcraft.fluid.heat_1= (§eWarm§r)
-buildcraft.fluid.heat_2= (§6Hot§r)
-buildcraft.fluid.heat_3= (§cSearing§r)
 
 gate.action.extraction=%s Extraction Preset
 gate.action.pipe.item.color=Paint Items %s
@@ -354,19 +337,6 @@ item.blueprint.no_build=No Building
 item.blueprint.incomplete=Incomplete
 item.mapLocation.name=Map Location
 item.gateCopier.name=Gate Copier
-item.plasticSheet.singular.name=Plastic Sheet
-item.plasticSheet.plural.name=Plastic Sheets
-
-item.buildcraft_pipe_wood_item.name=Wooden Transport Pipe
-item.buildcraft_pipe_cobblestone_item.name=Cobblestone Transport Pipe
-item.buildcraft_pipe_stone_item.name=Stone Transport Pipe
-item.buildcraft_pipe_andersite_item.name=Andersite Transport Pipe
-item.buildcraft_pipe_andersite_polished_item.name=Polished Andersite Transport Pipe
-item.buildcraft_pipe_diorite_item.name=Diorite Transport Pipe
-item.buildcraft_pipe_diorite_polished_item.name=Polished Diorite Transport Pipe
-item.buildcraft_pipe_granite_item.name=Granite Transport Pipe
-item.buildcraft_pipe_granite_polished_item.name=Polished Granite Transport Pipe
-
 item.PipeItemsWood.name=나무 아이템 파이프
 item.PipeItemsCobblestone.name=조약돌 아이템 파이프
 item.PipeItemsStone.name=돌 아이템 파이프
@@ -405,22 +375,12 @@ item.PipeItemsSandstone.name=사암 아이템 파이프
 item.PipeFluidsSandstone.name=사암 액체 파이프
 item.PipePowerSandstone.name=사암 전력 파이프
 
-
 item.PipeRobotStation.name=도킹 스테이션
 item.Facade.name=덮개
 item.Facade.state_hollow=가운데가 빈
-item.FacadePhased.name=Phased Facade
-item.FacadePhased.state=%s: %s
-item.FacadePhased.state_default=Default: %s
-item.FacadePhased.state_transparent=Transparent
 item.PipePlug.name=파이프 마개
 item.Lens.name=렌즈
 item.Filter.name=필터
-item.debugger.name=Debugger
-item.debugger.warning=Use only for testing! Leaks secrets.
-item.package.name=Package
-item.guideBook.name=Guide Book
-item.robot_goggles.name=Robot Goggles
 
 itemGroup.buildcraft.boards=빌드크래프트 [BuildCraft Robots]
 itemGroup.buildcraft.main=빌드크래프트 [Buildcraft]
@@ -464,6 +424,23 @@ tile.spring.water.name=지하수 샘
 tile.stampingTableBlock.name=Stamping Table
 tile.tankBlock.name=탱크
 tile.zonePlan.name=지역 플래너
+
+gui.tile.autoWorkbenchBlock.name.title=자동 작업대
+gui.tile.engineIron.name.title=연소 엔진
+gui.tile.engineStone.name.title=스털링 엔진
+gui.tile.fillerBlock.name.title=필러
+gui.tile.libraryBlock.name.title=설계도 저장기
+gui.tile.zonePlan.name.title=지역 플래너
+gui.tile.builderBlock.name.title=건설기
+gui.tile.assemblyTableBlock.name.title=조립 테이블
+gui.tile.assemblyWorkbenchBlock.name.title=고급 조립 테이블
+gui.tile.integrationTableBlock.name.title=Integration Table
+gui.tile.chargingTableBlock.name.title=Charging Table
+gui.tile.programmingTableBlock.name.title=프로그레밍 테이블
+gui.tile.stampingTableBlock.name.title=Stamping Table
+gui.tile.filteredBufferBlock.name.title=필터 버퍼
+gui.tile.refineryBlock.name.title=정제기
+gui.tile.blockHopper.name.title=깔때기
 
 tile.architect.rotate=회전: On
 tile.architect.norotate=회전: Off
@@ -608,13 +585,6 @@ command.buildcraft.buildcraft.version.format=Format: /%s
 command.buildcraft.buildcraft.changelog.desc=- %s : Changelog
 command.buildcraft.buildcraft.changelog.help=Displays the latest BC changelog.
 command.buildcraft.buildcraft.changelog.format=Format: /%s
-
-buildcraft.item.maplocation.nonclean.usage=Shift-right click to clean
-
-buildcraft.guide.chapter.=EMPTY CHAPTER!
-buildcraft.guide.chapter.block=Blocks
-buildcraft.guide.chapter.item=Items
-buildcraft.guide.chapter.gears=Gears
 
 command.buildcraft.buildcraft.op.desc=- %s : Op FakePlayer
 command.buildcraft.buildcraft.op.help=Gives OP rights to the BC FakePlayer (acts in the name of quarries, robots, etc.)

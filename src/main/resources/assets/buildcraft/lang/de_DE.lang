@@ -438,6 +438,23 @@ tile.stampingTableBlock.name=Stanztisch
 tile.tankBlock.name=Tank
 tile.zonePlan.name=Zonenplaner
 
+gui.tile.autoWorkbenchBlock.name.title=Automatische Werkbank
+gui.tile.engineIron.name.title=Verbrennungsmotor
+gui.tile.engineStone.name.title=Stirlingmotor
+gui.tile.fillerBlock.name.title=Füller
+gui.tile.libraryBlock.name.title=Elektronische Bibliothek
+gui.tile.zonePlan.name.title=Zonenplaner
+gui.tile.builderBlock.name.title=Konstrukteur
+gui.tile.assemblyTableBlock.name.title=Montagebank
+gui.tile.assemblyWorkbenchBlock.name.title=Montagewerkbank
+gui.tile.integrationTableBlock.name.title=Integrationstisch
+gui.tile.chargingTableBlock.name.title=Ladetisch
+gui.tile.programmingTableBlock.name.title=Programmiertisch
+gui.tile.stampingTableBlock.name.title=Stanztisch
+gui.tile.filteredBufferBlock.name.title=Gefilterter Puffer
+gui.tile.refineryBlock.name.title=Raffinerie
+gui.tile.blockHopper.name.title=Schütte
+
 tile.architect.rotate=Rotieren: An
 tile.architect.norotate=Rotieren: Aus
 tile.architect.allowCreative=Modus: Kreativ
@@ -566,7 +583,6 @@ bc_update.changelog=Tippe '/buildcraft changelog', um das Changelog zu sehen
 chat.buildcraft.quarry.tooSmall=[BuildCraft] Steinbruchgrenzen liegen außerhalb des Chunk-geladenen Bereiches, oder ist zu klein %d %d (%d)
 chat.buildcraft.quarry.chunkloadInfo=[BuildCraft] Der Steinbruch bei %d %d %d wird %d Chunks laden
 
-
 command.buildcraft.version=BuildCraft %s für Minecraft %s (Aktuellste: %s).
 command.buildcraft.changelog_header=Changelog für BuildCraft %s:
 
@@ -587,11 +603,6 @@ command.buildcraft.buildcraft.changelog.desc=- %s : Changelog
 command.buildcraft.buildcraft.changelog.help=Zeigt den aktuellsten BC-Changelog
 command.buildcraft.buildcraft.changelog.format=Format: /%s
 
-buildcraft.guide.chapter.=EMPTY CHAPTER!
-buildcraft.guide.chapter.block=Blocks
-buildcraft.guide.chapter.item=Items
-buildcraft.guide.chapter.gears=Gears
- 
 command.buildcraft.buildcraft.op.desc=- %s : Op FakePlayer
 command.buildcraft.buildcraft.op.help=Gibt OP-Rechte für den Buildcraft-FakePlayer (verantwortlich für Steinbrücher, Roboter, usw.)
 command.buildcraft.buildcraft.op.format=Format: /%s
