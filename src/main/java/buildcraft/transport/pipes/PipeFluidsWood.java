@@ -80,6 +80,10 @@ public class PipeFluidsWood extends Pipe<PipeTransportFluids> implements IEnergy
     public void updateEntity() {
         super.updateEntity();
 
+        if (logic.isBeingPoweredByRedstone()) {
+            liquidToExtract += 10;
+        }
+
         if (liquidToExtract <= 0) {
             return;
         }
@@ -101,7 +105,7 @@ public class PipeFluidsWood extends Pipe<PipeTransportFluids> implements IEnergy
     }
 
     public int extractFluid(IFluidHandler fluidHandler, ForgeDirection side) {
-        int amount = liquidToExtract > transport.getFlowRate() ? transport.getFlowRate() : liquidToExtract;
+        int amount = Math.min(liquidToExtract, transport.getFlowRate());
         FluidTankInfo tankInfo = transport.getTankInfo(side)[0];
         FluidStack extracted;
 
@@ -160,6 +164,11 @@ public class PipeFluidsWood extends Pipe<PipeTransportFluids> implements IEnergy
     }
 
     @Override
+    public boolean canConnectRedstone() {
+        return true;
+    }
+
+    @Override
     public boolean canConnectEnergy(ForgeDirection from) {
         return true;
     }
@@ -171,7 +180,7 @@ public class PipeFluidsWood extends Pipe<PipeTransportFluids> implements IEnergy
             return 0;
         }
 
-        int maxToReceive = (getMaxExtractionFluid() - liquidToExtract) / getEnergyMultiplier();
+        int maxToReceive = (getMaxExtractionFluid() - liquidToExtract) / getEnergyMultiplier(); // 500 / 50 = 10
         int received = Math.min(maxReceive, maxToReceive);
         if (!simulate) {
             liquidToExtract += getEnergyMultiplier() * received;

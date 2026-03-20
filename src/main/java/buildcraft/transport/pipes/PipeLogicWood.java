@@ -17,6 +17,8 @@ import buildcraft.transport.Pipe;
 
 public abstract class PipeLogicWood {
 
+    boolean isPowered = false;
+
     protected final Pipe<?> pipe;
 
     public PipeLogicWood(Pipe<?> pipe) {
@@ -121,8 +123,14 @@ public abstract class PipeLogicWood {
     }
 
     public void onNeighborBlockChange() {
+        isPowered = pipe.container.getWorldObj()
+                .isBlockIndirectlyGettingPowered(pipe.container.xCoord, pipe.container.yCoord, pipe.container.zCoord);
         if (!pipe.container.getWorldObj().isRemote) {
             switchSourceIfNeeded();
         }
+    }
+
+    public boolean isBeingPoweredByRedstone() {
+        return isPowered;
     }
 }

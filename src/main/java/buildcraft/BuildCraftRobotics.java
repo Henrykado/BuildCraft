@@ -232,39 +232,43 @@ public class BuildCraftRobotics extends BuildCraftMod {
         RedstoneBoardRegistry.instance.registerBoardType(
                 new BCBoardNBT("buildcraft:boardRobotPicker", "picker", BoardRobotPicker.class, "green"),
                 8000);
-        RedstoneBoardRegistry.instance.registerBoardType(
-                new BCBoardNBT("buildcraft:boardRobotCarrier", "carrier", BoardRobotCarrier.class, "green"),
-                8000);
-        RedstoneBoardRegistry.instance.registerBoardType(
-                new BCBoardNBT(
-                        "buildcraft:boardRobotFluidCarrier",
-                        "fluidCarrier",
-                        BoardRobotFluidCarrier.class,
-                        "green"),
-                8000);
+        /*
+         * RedstoneBoardRegistry.instance.registerBoardType( new BCBoardNBT("buildcraft:boardRobotCarrier", "carrier",
+         * BoardRobotCarrier.class, "green"), 8000);
+         */
+        /*
+         * RedstoneBoardRegistry.instance.registerBoardType( new BCBoardNBT( "buildcraft:boardRobotFluidCarrier",
+         * "fluidCarrier", BoardRobotFluidCarrier.class, "green"), 8000);
+         */
 
         // More expensive robot types
         // Those generally handle block mining/harvesting/placement.
-        RedstoneBoardRegistry.instance.registerBoardType(
-                new BCBoardNBT("buildcraft:boardRobotLumberjack", "lumberjack", BoardRobotLumberjack.class, "blue"),
-                32000);
-        RedstoneBoardRegistry.instance.registerBoardType(
-                new BCBoardNBT("buildcraft:boardRobotHarvester", "harvester", BoardRobotHarvester.class, "blue"),
-                32000);
-        RedstoneBoardRegistry.instance
-                .registerBoardType(new BCBoardNBT("buildcraft:miner", "miner", BoardRobotMiner.class, "blue"), 32000);
-        RedstoneBoardRegistry.instance.registerBoardType(
-                new BCBoardNBT("buildcraft:boardRobotPlanter", "planter", BoardRobotPlanter.class, "blue"),
-                32000);
+        /*
+         * RedstoneBoardRegistry.instance.registerBoardType( new BCBoardNBT("buildcraft:boardRobotLumberjack",
+         * "lumberjack", BoardRobotLumberjack.class, "blue"), 32000);
+         */
+        /*
+         * RedstoneBoardRegistry.instance.registerBoardType( new BCBoardNBT("buildcraft:boardRobotHarvester",
+         * "harvester", BoardRobotHarvester.class, "blue"), 32000);
+         */
+        /*
+         * RedstoneBoardRegistry.instance .registerBoardType(new BCBoardNBT("buildcraft:miner", "miner",
+         * BoardRobotMiner.class, "blue"), 32000);
+         */
+        /*
+         * RedstoneBoardRegistry.instance.registerBoardType( new BCBoardNBT("buildcraft:boardRobotPlanter", "planter",
+         * BoardRobotPlanter.class, "blue"), 32000);
+         */
         RedstoneBoardRegistry.instance.registerBoardType(
                 new BCBoardNBT("buildcraft:boardRobotFarmer", "farmer", BoardRobotFarmer.class, "blue"),
                 32000);
         RedstoneBoardRegistry.instance.registerBoardType(
                 new BCBoardNBT("buildcraft:leave_cutter", "leaveCutter", BoardRobotLeaveCutter.class, "blue"),
                 32000);
-        RedstoneBoardRegistry.instance.registerBoardType(
-                new BCBoardNBT("buildcraft:boardRobotButcher", "butcher", BoardRobotButcher.class, "blue"),
-                32000);
+        /*
+         * RedstoneBoardRegistry.instance.registerBoardType( new BCBoardNBT("buildcraft:boardRobotButcher", "butcher",
+         * BoardRobotButcher.class, "blue"), 32000);
+         */
         RedstoneBoardRegistry.instance.registerBoardType(
                 new BCBoardNBT("buildcraft:shovelman", "shovelman", BoardRobotShovelman.class, "blue"),
                 32000);
@@ -277,9 +281,10 @@ public class BuildCraftRobotics extends BuildCraftMod {
         RedstoneBoardRegistry.instance.registerBoardType(
                 new BCBoardNBT("buildcraft:boardRobotDelivery", "delivery", BoardRobotDelivery.class, "green"),
                 128000);
-        RedstoneBoardRegistry.instance.registerBoardType(
-                new BCBoardNBT("buildcraft:boardRobotKnight", "knight", BoardRobotKnight.class, "red"),
-                128000);
+        /*
+         * RedstoneBoardRegistry.instance.registerBoardType( new BCBoardNBT("buildcraft:boardRobotKnight", "knight",
+         * BoardRobotKnight.class, "red"), 128000);
+         */
         RedstoneBoardRegistry.instance.registerBoardType(
                 new BCBoardNBT("buildcraft:boardRobotBomber", "bomber", BoardRobotBomber.class, "red"),
                 128000);

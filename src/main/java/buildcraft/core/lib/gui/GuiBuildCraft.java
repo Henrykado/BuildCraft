@@ -532,9 +532,11 @@ public abstract class GuiBuildCraft extends GuiContainer {
         public void toggleOpen() {
             if (open) {
                 open = false;
+                currentWidth = minWidth;
+                currentHeight = minHeight;
                 SessionVars.setOpenedLedger(null);
             } else {
-                open = true;
+                setFullyOpen();
                 SessionVars.setOpenedLedger(this.getClass());
             }
         }

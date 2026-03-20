@@ -59,6 +59,7 @@ import buildcraft.core.lib.utils.Utils;
 import buildcraft.core.proxy.CoreProxy;
 import buildcraft.transport.gates.GatePluggable;
 import buildcraft.transport.render.PipeRendererWorld;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -691,6 +692,11 @@ public class BlockGenericPipe extends BlockBuildCraft implements IColorRemovable
                 // interface callbacks for the individual pipe/logic calls
                 RaytraceResult rayTraceResult = doRayTrace(world, x, y, z, player);
                 if (rayTraceResult != null) {
+                    if (player.isSneaking()
+                            && disconnectPipeSide(rayTraceResult, ForgeDirection.getOrientation(side), pipe)) {
+                        return true;
+                    }
+
                     ForgeDirection hitSide = rayTraceResult.hitPart == Part.Pipe ? rayTraceResult.sideHit
                             : ForgeDirection.UNKNOWN;
                     return pipe.blockActivated(player, hitSide);
@@ -760,6 +766,31 @@ public class BlockGenericPipe extends BlockBuildCraft implements IColorRemovable
             }
         }
 
+        return false;
+    }
+
+    public boolean disconnectPipeSide(RaytraceResult rayTraceResult, ForgeDirection side, Pipe<?> pipe) {
+        if (rayTraceResult.hitPart == Part.Pipe) {
+            ForgeDirection placementSide = rayTraceResult.sideHit != ForgeDirection.UNKNOWN ? rayTraceResult.sideHit
+                    : side;
+
+            TileEntity neighborPipe = pipe.container.getTile(placementSide);
+            if (neighborPipe == null) {
+                return false;
+            }
+
+            boolean newValue = !pipe.container.sideProperties.disconnected[placementSide.ordinal()];
+
+            FMLLog.info("[BC] " + newValue);
+            pipe.container.setSideAsDisconnected(placementSide, newValue);
+
+            if (neighborPipe instanceof TileGenericPipe) {
+                ((TileGenericPipe) neighborPipe).setSideAsDisconnected(placementSide.getOpposite(), newValue);
+                FMLLog.info("[BC] set neighbor");
+            }
+
+            return true;
+        }
         return false;
     }
 

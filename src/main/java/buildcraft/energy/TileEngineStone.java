@@ -94,6 +94,8 @@ public class TileEngineStone extends TileEngineWithInventory {
     private int getItemBurnTime(ItemStack itemstack) {
         if (itemstack == null) {
             return 0;
+        } else if (itemstack.getItem() == Items.redstone) {
+            return 200;
         } else if (itemstack.getItem() == Items.paper) {
             return 400;
         } else {
